@@ -22,6 +22,7 @@ This is the first code executed on the machine.
 
 - create an infinite loop
 - make the sector bootable
+- print "Started in 16-bit Real Mode"
 
 ---
 
@@ -35,7 +36,9 @@ make run_qemu
 
 ## Expected result
 
-An infinite loop on a black screen
+```txt
+Started in 16-bit Real Mode
+```
 
 ---
 
