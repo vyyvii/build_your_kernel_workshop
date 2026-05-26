@@ -1,30 +1,26 @@
-# 02 — Protected Mode
+# 05 — Kernel
 
 ## Goal
 
-Switch the CPU from 16-bit real mode to 32-bit protected mode. \
-Modern operating systems do not run in real mode. \
-To unlock 32-bit features, we must configure the CPU and enable protected mode.
+Launch a minimal C kernel in 32-bit protected mode. \
+At this stage, we finally execute our own C code without Linux or any operating system.
 
 ---
 
 ## Concepts introduced
 
-- protected mode
-- GDT
-- CR0 register
-- far jump
-- 32-bit execution
-- VGA memory
+- kernel entry point
+- linking
+- ASM ↔ C interaction
+- VGA output from C
 
 ---
 
 ## Your tasks
 
-- load the GDT
-- enable protected mode
-- jump to 32-bit code
-- print "32-bit Protected Mode"
+- implement `kernel_main`
+- clear the screen
+- display `Hello World`
 
 ---
 
@@ -39,17 +35,19 @@ make run_qemu
 ## Expected result
 
 ```txt
-32-bit Protected Mode
+Hello World
 ```
 
 ---
 
 ## Notes
 
-Protected mode allows:
-- 32-bit registers
-- larger memory access
-- modern operating system features
+A kernel is simply a program executed directly by the machine.
 
 At this stage:
-- BIOS interrupts are no longer available
+- there is no operating system
+- no standard library
+- no `printf`
+- no terminal
+
+Everything interacts directly with the hardware.

@@ -8,12 +8,25 @@ NAME			= 	workshop
 # ─────────────────────────────────────────────────────────────
 # FILES
 # ─────────────────────────────────────────────────────────────
+KERNEL_SRC 		= \
+					kernel/kernel.c
+KERNEL_OBJ 		= 	$(KERNEL_SRC:.c=.o)
+
+KERNEL_ASM 		= \
+					kernel/kernel_entry.asm
+KERNEL_ASM_OBJ 	= 	$(KERNEL_ASM:.asm=.o)
+
 BOOT 		   	= 	boot.asm
 BOOT_BIN		=	boot.bin
+LINKER			=	kernel/linker.ld
+KERNEL_BIN		= 	kernel/kernel.bin
 
 # ─────────────────────────────────────────────────────────────
 # COMPILER & COMPILATION FLAGS
 # ─────────────────────────────────────────────────────────────
+CC			= 		i386-elf-gcc
+CFLAGS      = 		-ffreestanding -m32 -fno-stack-protector -nostdlib -Iinclude
+
 NASM		= 		nasm
 NASM_FLAGS	=	 	-f elf32
 
@@ -22,6 +35,12 @@ NASM_FLAGS	=	 	-f elf32
 # ─────────────────────────────────────────────────────────────
 QEMU 	    =		qemu-system-i386
 QEMU_FLAGS 	=		-fda
+
+OBJCOPY 	=		i386-elf-objcopy
+OBJCP_FLAGS =		-O binary kernel/kernel.elf
+
+LD			=		i386-elf-ld
+LD_FLAGS	=		-m elf_i386 -o kernel/kernel.elf
 
 # ─────────────────────────────────────────────────────────────
 # TOOLS
@@ -60,11 +79,18 @@ all: $(NAME)
 %.o: %.asm
 	$(NASM) $(NASM_FLAGS) $< -o $@
 
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 compile_boot:
 	$(NASM) $(BOOT) -o $(BOOT_BIN)
 
-$(NAME): compile_boot
-	cat $(BOOT_BIN) > $(NAME)
+compile_kernel: $(KERNEL_OBJ) $(KERNEL_ASM_OBJ)
+	$(LD) $(LD_FLAGS) -T $(LINKER) $(KERNEL_ASM_OBJ) $(KERNEL_OBJ)
+	$(OBJCOPY) $(OBJCP_FLAGS) $(KERNEL_BIN)
+
+$(NAME): compile_boot compile_kernel
+	cat $(BOOT_BIN) $(KERNEL_BIN) > $(NAME)
 
 # ─────────────────────────────────────────────────────────────
 # RUNNING
@@ -86,6 +112,7 @@ re: fclean all
 # ─────────────────────────────────────────────────────────────
 # PHONY TARGETS
 # ─────────────────────────────────────────────────────────────
-.phony: install_base install_and_config_all compile_boot run_qemu clean fclean all re
+.phony: install_base install_and_config_all compile_boot compile_kernel \
+	run_qemu update_repo clean fclean all re
 
 # WORKSHOP | 2026

@@ -7,6 +7,8 @@
 [bits 16]                       ; REAL MODE
 [org 0x7c00]
 
+KERNEL_OFFSET equ 0x1000
+
 start:
     cli                         ; Disable CPU interruptions
 
@@ -15,11 +17,15 @@ start:
     mov es, ax
     mov ss, ax
 
+    mov [BOOT_DRIVE], dl        ; save boot drive
+
     mov bp, 0x9000              ; Stack
     mov sp, bp
 
     mov bx, MSG_REAL_MODE       ; Load the string into bx
     call print_rm               ; Print bx
+
+    call load_kernel            ;  Load the kernel
 
     call switch_to_pm           ; Go from real to protected mode
 
@@ -32,6 +38,7 @@ start:
 %include "pm/gdt.asm"
 %include "pm/print_pm.asm"
 %include "pm/switch_pm.asm"
+%include "periph/disk_load.asm"
 
 ; ===============================
 ; PROTECTED MODE
@@ -45,6 +52,8 @@ BEGIN_PM:
     call print_pm               ; Print ebx
 
     pop ebx                     ; ... so we have to push them on the stack & finally, pop them
+
+    call KERNEL_OFFSET          ; Go to the kernel
 
     jmp $                       ; HANG
 
