@@ -1,28 +1,30 @@
-# 01 — Boot Sector
+# 02 — Protected Mode
 
 ## Goal
 
-Write your very first boot sector. \
-At startup, the BIOS loads the first 512 bytes of the disk into memory and executes them. \
-This is the first code executed on the machine.
+Switch the CPU from 16-bit real mode to 32-bit protected mode. \
+Modern operating systems do not run in real mode. \
+To unlock 32-bit features, we must configure the CPU and enable protected mode.
 
 ---
 
 ## Concepts introduced
 
-- BIOS
-- boot sector
-- x86 real mode
-- boot signature `0xAA55`
-- infinite loop
+- protected mode
+- GDT
+- CR0 register
+- far jump
+- 32-bit execution
+- VGA memory
 
 ---
 
 ## Your tasks
 
-- create an infinite loop
-- make the sector bootable
-- print "Started in 16-bit Real Mode"
+- load the GDT
+- enable protected mode
+- jump to 32-bit code
+- print "32-bit Protected Mode"
 
 ---
 
@@ -37,14 +39,17 @@ make run_qemu
 ## Expected result
 
 ```txt
-Started in 16-bit Real Mode
+32-bit Protected Mode
 ```
 
 ---
 
 ## Notes
 
-A boot sector:
-- is exactly 512 bytes long
-- ends with the boot signature `0xAA55`
-- is loaded by the BIOS at address `0x7C00`
+Protected mode allows:
+- 32-bit registers
+- larger memory access
+- modern operating system features
+
+At this stage:
+- BIOS interrupts are no longer available

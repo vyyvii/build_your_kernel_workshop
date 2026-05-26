@@ -19,8 +19,9 @@ start:
     mov sp, bp
 
     mov bx, MSG_REAL_MODE       ; Load the string into bx
+    call print_rm               ; Print bx
 
-    call print_rm
+    call switch_to_pm           ; Go from real to protected mode
 
     jmp $                       ; HANG
 
@@ -28,11 +29,31 @@ start:
 ; INCLUDES
 ; ===============================
 %include "print_rm.asm"
+%include "pm/gdt.asm"
+%include "pm/print_pm.asm"
+%include "pm/switch_pm.asm"
+
+; ===============================
+; PROTECTED MODE
+; ===============================
+[bits 32]
+BEGIN_PM:
+    push ebx                    ; ebx (& esi/edi) are callee-saved...
+
+    mov ebx, MSG_PROT_MODE      ; Load string into ebx
+    mov ecx, 22                 ; Load the size of the string into ecx
+    call print_pm               ; Print ebx
+
+    pop ebx                     ; ... so we have to push them on the stack & finally, pop them
+
+    jmp $                       ; HANG
 
 ; ===============================
 ; GLOBAL VARIABLES
 ; ===============================
+BOOT_DRIVE db 0
 MSG_REAL_MODE db "Started in 16-bit Real Mode", 0x0d, 0x0a, 0
+MSG_PROT_MODE db "32-bit Protected Mode", 0
 
 ; ===============================
 ; PADDING & SIGNATURE
