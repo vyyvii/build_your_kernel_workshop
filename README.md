@@ -1,59 +1,31 @@
-# Build Your Own Kernel Workshop
+# 01 — Boot Sector
 
-> Build a minimal x86 operating system from scratch in 2 hours.
+## Goal
 
-This workshop introduces the fundamentals of low-level programming and operating system booting.
-
-By the end of the workshop, you will:
-- understand how a computer boots
-- write x86 assembly
-- switch to 32-bit protected mode
-- write directly to VGA memory
-- launch a minimal C kernel
-- display `Hello World` without Linux or any operating system
+Write your very first boot sector. \
+At startup, the BIOS loads the first 512 bytes of the disk into memory and executes them. \
+This is the first code executed on the machine.
 
 ---
 
-# Workshop roadmap
+## Concepts introduced
 
-The workshop is divided into multiple Git branches.
-
-Each branch represents one step of the boot process.
-
-| Step | Branch | Goal |
-|---|---|---|
-| 1 | `01-boot-sector` | Execute code from the boot sector |
-| 2 | `02-real-mode` | Use BIOS interrupts in 16-bit real mode |
-| 3 | `03-vga` | Write directly to VGA memory |
-| 4 | `04-protected-mode` | Switch the CPU to 32-bit protected mode |
-| 5 | `05-kernel` | Launch a minimal C kernel |
-| Final | `05-solution` | Complete working solution |
+- BIOS
+- boot sector
+- x86 real mode
+- boot signature `0xAA55`
+- infinite loop
 
 ---
 
-# Getting started
+## Your tasks
 
-## Clone the repository
-
-```bash
-git clone https://github.com/vyyvii/build_your_kernel_workshop.git
-cd build_your_kernel_workshop
-```
+- create an infinite loop
+- make the sector bootable
 
 ---
 
-# Install dependencies
-
-> [!WARNING]
-> Root access is required.
-
-```bash
-make install_and_config_all
-```
-
----
-
-# Run the OS
+## Build & run
 
 ```bash
 make run_qemu
@@ -61,58 +33,15 @@ make run_qemu
 
 ---
 
-# Navigation between workshop steps
+## Expected result
 
-Example:
-
-```bash
-git checkout 01-boot-sector
-```
+An infinite loop on a black screen
 
 ---
 
-# Recommended setup
+## Notes
 
-- Linux
-- VSCode
-- QEMU
-- NASM
-
----
-
-# Workshop philosophy
-
-This workshop is intentionally minimal.
-
-The goal is not to build a production operating system.
-
-The goal is to understand:
-- how a computer boots
-- how low-level software works
-- what exists underneath `printf("Hello World")`
-
----
-
-# Resources
-
-### Books & articles
-
-- *Writing a Simple Operating System — from Scratch* — Nick Blundell
-- *OSDev Wiki* — https://wiki.osdev.org/
-
-### Videos
-
-- *Building an OS* — nanobyte
-- *vas-y, viens, on recode Windows de zéro* — V2F
-
-### Open-source projects
-
-- https://github.com/nanobyte-dev/nanobyte_os
-- https://github.com/ghaiklor/ghaiklor-os-gcc
-
----
-
-# Contributors
-
-Main contributor:
-Victor Defauchy
+A boot sector:
+- is exactly 512 bytes long
+- ends with the boot signature `0xAA55`
+- is loaded by the BIOS at address `0x7C00`
