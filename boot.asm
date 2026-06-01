@@ -5,22 +5,22 @@
 ; BOOT SECTOR
 ; ===============================
 [bits 16]                       ; REAL MODE
-[org 0x7c00]
+[org 0x7c00]                    ; Put program to adress 0x7c00
 
 start:
     cli                         ; Disable CPU interruptions
 
-    xor ax, ax                  ; Init segments
+    mov ax, 0                   ; Init segments
     mov ds, ax
     mov es, ax
     mov ss, ax
 
     mov bp, 0x9000              ; Stack
-    mov sp, bp
+    mov sp, bp                  ; Put the top of the stack in bp
 
     mov bx, MSG_REAL_MODE       ; Load the string into bx
 
-    call print_rm
+    call print_rm               ; Print the string
 
     jmp $                       ; HANG
 
@@ -32,7 +32,7 @@ start:
 ; ===============================
 ; GLOBAL VARIABLES
 ; ===============================
-MSG_REAL_MODE db "Started in 16-bit Real Mode", 0x0d, 0x0a, 0
+MSG_REAL_MODE db "Started in 16-bit Real Mode"
 
 ; ===============================
 ; PADDING & SIGNATURE
