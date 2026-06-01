@@ -25,7 +25,7 @@ start:
     mov bx, MSG_REAL_MODE       ; Load the string into bx
     call print_rm               ; Print bx
 
-    call load_kernel            ;  Load the kernel
+    call load_kernel            ; Load the kernel
 
     call switch_to_pm           ; Go from real to protected mode
 
