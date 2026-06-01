@@ -5,13 +5,13 @@
 
 switch_to_pm:
     cli                     ; Stop CPU interrupt
-    lgdt [gdt_descriptor]   ; Give to the CPU the GDT
+    lgdt [______________]   ; Give to the CPU the GDT
 
-    mov eax, cr0            ; Trigger the CPU register CR0
+    mov eax, ___            ; Trigger the CPU register CR0
     or eax, 1               ; in order to activate the
-    mov cr0, eax            ; protected mode
+    mov ___, eax            ; protected mode
 
-    jmp CODE_SEG:init_pm    ; Long jump to the protected mode to avoid pipelining
+    jmp CODE_SEG:_______    ; Long jump to the protected mode to avoid pipelining
 
 [bits 32]                   ; PROTECTED MODE
 

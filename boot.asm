@@ -52,7 +52,7 @@ BEGIN_PM:
 ; GLOBAL VARIABLES
 ; ===============================
 BOOT_DRIVE db 0
-MSG_REAL_MODE db "Started in 16-bit Real Mode", 0x0d, 0x0a, 0
+MSG_REAL_MODE db "Started in 16-bit Real Mode", 0
 MSG_PROT_MODE db "32-bit Protected Mode", 0
 
 ; ===============================
