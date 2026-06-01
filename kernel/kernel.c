@@ -8,7 +8,7 @@ char *video_memory = (char*) VIDEO_MEMORY;                  // The adress of the
 
 void print_char(char c, int row, int col, char attr)
 {
-    int offset =  2 * (row * MAX_COL + col);
+    int offset = ___;
 
     video_memory[offset] = c;
     video_memory[offset + 1] = BLACK_ON_WHITE;
@@ -28,7 +28,7 @@ void print_string(char *str, int row, int col, int color)
 
 void reset_screen(void)
 {
-    int total = MAX_COL * MAX_ROW * 2;
+    int total = ___;
 
     for (int i = 0; i < total; i += 2)
     {
