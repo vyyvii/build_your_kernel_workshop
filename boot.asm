@@ -4,11 +4,11 @@
 ; ===============================
 ; BOOT SECTOR
 ; ===============================
-[bits 16]                       ; REAL MODE
+[bits __]                       ; REAL MODE
 [org 0x7c00]                    ; Put program to adress 0x7c00
 
 start:
-    cli                         ; Disable CPU interruptions
+    ___                         ; Disable CPU interruptions
 
     mov ax, 0                   ; Init segments
     mov ds, ax
@@ -37,7 +37,7 @@ MSG_REAL_MODE db "Started in 16-bit Real Mode"
 ; ===============================
 ; PADDING & SIGNATURE
 ; ===============================
-times 510-($-$$) db 0           ; PADDING
-dw 0xaa55 ;(BIG ENDIAN)         ; BOOTLOADER SIGNATURE
+times __________ db 0           ; PADDING
+dw ______ ;(BIG ENDIAN)         ; BOOTLOADER SIGNATURE
 
 ; WORKSHOP | 2026
